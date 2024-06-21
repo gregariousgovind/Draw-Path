@@ -267,7 +267,8 @@ export class App {
     output: string,
     input: string
   ): string {
-    let halfX = startX + (endX - startX) / 2;
+    const halfX = (startX + endX) / 2;
+    const halfY = (startY + endY) / 2;
     let path = `M ${startX} ${startY} `;
     
     switch (`${output}-${input}`) {
