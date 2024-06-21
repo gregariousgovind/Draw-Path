@@ -283,7 +283,6 @@ export class App {
         }
         path += `L ${endX - 20} ${endY}`;
         path += `L ${endX} ${endY}`;
-        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'output_left-input_top':
         path += `L ${startX - 20} ${startY} `;
@@ -292,7 +291,6 @@ export class App {
         }
         path += `L ${endX} ${endY - 20}`;
         path += `L ${endX} ${endY}`;
-        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'output_left-input_right':
         path += `L ${startX - 20} ${startY} `;
@@ -301,7 +299,6 @@ export class App {
         }
         path += `L ${endX + 20} ${endY}`;
         path += `L ${endX} ${endY}`;
-        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'output_left-input_bottom':
         path += `L ${startX - 20} ${startY} `;
@@ -310,7 +307,6 @@ export class App {
         }
         path += `L ${endX} ${endY + 20}`;
         path += `L ${endX} ${endY}`;
-        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
       case 'output_top-input_left':
         path += `L ${startX} ${startY} `;
@@ -320,13 +316,11 @@ export class App {
         if (endX - 20 !== endX || startY !== endY) {
           path += `L ${endX - 20} ${endY} `;
         }
-        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'output_top-input_top':
         if (startX !== endX || startY !== endY) {
           path += `L ${endX} ${endY} `;
         }
-        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'output_top-input_right':
         path += `L ${startX} ${startY} `;
@@ -336,7 +330,6 @@ export class App {
         if (endX + 20 !== endX || startY !== endY) {
           path += `L ${endX} ${endY} `;
         }
-        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'output_top-input_bottom':
         path += `L ${startX} ${startY} `;
@@ -346,7 +339,6 @@ export class App {
         if (startX !== endX || endY + 20 !== endY) {
           path += `L ${endX} ${endY} `;
         }
-        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
       case 'output_right-input_left':
         path += `L ${startX} ${startY} `;
@@ -356,16 +348,13 @@ export class App {
         if (endX - 20 !== endX || startY !== endY) {
           path += `L ${endX - 20} ${endY} `;
         }
-        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'output_right-input_top':
-        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'output_right-input_right':
         if (startX !== endX || startY !== endY) {
           path += `L ${endX} ${endY} `;
         }
-        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'output_right-input_bottom':
         path += `L ${startX} ${startY} `;
@@ -375,7 +364,6 @@ export class App {
         if (startX !== endX || endY + 20 !== endY) {
           path += `L ${endX} ${endY} `;
         }
-        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
       case 'output_bottom-input_left':
         path += `L ${startX} ${startY} `;
@@ -385,7 +373,6 @@ export class App {
         if (endX - 20 !== endX || startY !== endY) {
           path += `L ${endX - 20} ${endY} `;
         }
-        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'output_bottom-input_top':
         path += `L ${startX} ${startY} `;
@@ -395,19 +382,36 @@ export class App {
         if (startX !== endX || endY - 20 !== endY) {
           path += `L ${endX} ${endY} `;
         }
-        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'output_bottom-input_right':
         path += `L ${startX} ${startY} `;
         if (startX !== endX || startY !== endY) {
           path += `L ${endX} ${endY} `;
         }
-        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'output_bottom-input_bottom':
-        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
       default:
+        break;
+    }
+    path += this.drawArrowHead(endX, endY, input)
+    return path;
+  }
+
+  drawArrowHead(endX: number, endY: number, input: string) {
+    let path: string = '';
+    switch (input) {
+      case 'input_left':
+        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
+        break;
+      case 'input_top':
+        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
+        break;
+      case 'input_right':
+        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
+        break;
+      case 'input_bottom':
+        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
     }
     return path;
