@@ -8,15 +8,15 @@ const combinations = [
     id: 'b02c0463-4793-4ab2-814d-fdd71b50262d',
     output: 'output_left',
     input: 'input_left',
-    start: { x: 174, y: 88 },
-    end: { x: 269, y: 32 },
+    start: { x: 150, y: 200 },
+    end: { x: 300, y: 100 },
   },
   {
     id: '2ab98cf5-2dc3-4567-96a8-5d8320263d07',
     output: 'output_left',
     input: 'input_top',
-    start: { x: 28, y: 187 },
-    end: { x: 145, y: 166 },
+    start: { x: 150, y: 200 },
+    end: { x: 300, y: 100 },
   },
   {
     id: '7b3f2ba4-3d6f-4867-84bc-620cb6d9f0d9',
@@ -182,22 +182,22 @@ const combinations = [
     <h1>Draw Path</h1>
     <form>
       <label for="inputX">Input X:</label>
-      <input #inputX type="number" value="250" min="0" max="300" id="inputX" name="inputX" required>
+      <input #inputX type="number" value="150" min="0" max="300" id="inputX" name="inputX" required>
       <label for="inputY">Input Y:</label>
-      <input #inputY type="number" value="250" min="0" max="300" id="inputY" name="inputY" required>
+      <input #inputY type="number" value="200" min="0" max="300" id="inputY" name="inputY" required>
       <label for="outputX">Output X:</label>
-      <input #outputX type="number" value="50" min="0" max="300" id="outputX" name="outputX" required>
+      <input #outputX type="number" value="300" min="0" max="300" id="outputX" name="outputX" required>
       <label for="outputY">Output Y:</label>
-      <input #outputY type="number" value="50" min="0" max="300" id="outputY" name="outputY" required>
+      <input #outputY type="number" value="100" min="0" max="300" id="outputY" name="outputY" required>
       <label for="inputSelect">Input:</label>
-      <select #inputSelect id="inputSelect" value="input_left">
+      <select #inputSelect id="inputSelect">
         <option *ngFor="let input of inputs | keyvalue">{{ input.key }}</option>
       </select>
       <label for="outputSelect">Output:</label>
-      <select #outputSelect id="outputSelect" value="output_left">
+      <select #outputSelect id="outputSelect">
         <option *ngFor="let output of outputs | keyvalue">{{ output.key }}</option>
       </select>
-      <button type="button" (click)="createTestCurvature(+inputX.value, +inputY.value, +outputX.value, +outputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
+      <button type="button" (click)="createTestCurvature(+outputX.value, +outputY.value, +inputX.value, +inputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
     </form>
     <svg width="400" height="400">
       <path
@@ -431,6 +431,7 @@ export class App {
           path += `L ${halfX} ${startY} `;
         } else {
           path += `L ${startX - offset} ${startY} `;
+          path += `L ${startX - offset} ${endY} `;
         }
         break;
       case 'output_top':
@@ -438,6 +439,7 @@ export class App {
           path += `L ${startX} ${halfY} `;
         } else {
           path += `L ${startX} ${startY - offset} `;
+          path += `L ${endX} ${startY - offset} `;
         }
         break;
       case 'output_right':
@@ -463,20 +465,22 @@ export class App {
     const halfX = (startX + endX) / 2;
     const halfY = (startY + endY) / 2;
     const offset = 40;
-
+    debugger;
     switch (input) {
       case 'input_left':
-        if (startX > endX) {
+        if (startX < endX) {
           path += `L ${halfX} ${endY} `;
         } else {
+          path += `L ${endX - offset} ${startY} `;
           path += `L ${endX - offset} ${endY} `;
         }
         break;
       case 'input_top':
-        if (startY > endY) {
-          path += `L ${endX} ${halfY} `;
-        } else {
+        if (startY < endY) {
+          path += `L ${startX} ${endY + offset} `;
           path += `L ${endX} ${endY + offset} `;
+        } else {
+          path += `L ${endX} ${halfY} `;
         }
         break;
       case 'input_right':
