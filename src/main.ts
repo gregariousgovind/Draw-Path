@@ -267,154 +267,194 @@ export class App {
     output: string,
     input: string
   ): string {
-    const halfX = (startX + endX) / 2;
-    const halfY = (startY + endY) / 2;
+    // const halfX = (startX + endX) / 2;
+    // const halfY = (startY + endY) / 2;
     let path = `M ${startX} ${startY} `;
-    
-    switch (`${output}-${input}`) {
-      case 'output_left-input_left':
-        path += `L ${startX - 20} ${startY} `;
-        if (startY === endY) {
-          path += `L ${startX - 20} ${startY + 20} `;
-          path += `L ${endX - 20} ${endY + 20}`;
-        } else if (startX > endX) {
-          path += `L ${endX - 20} ${startY} `;
-        } else if (startY !== endY) {
-          path += `L ${startX - 20} ${endY} `;
-        }
-        path += `L ${endX - 20} ${endY}`;
-        break;
+    // switch (`${output}-${input}`) {
+    //   case 'output_left-input_left':
+    //     path += `L ${startX - 20} ${startY} `;
+    //     if (startY === endY) {
+    //       path += `L ${startX - 20} ${startY + 20} `;
+    //       path += `L ${endX - 20} ${endY + 20}`;
+    //     } else if (startX > endX) {
+    //       path += `L ${endX - 20} ${startY} `;
+    //     } else if (startY !== endY) {
+    //       path += `L ${startX - 20} ${endY} `;
+    //     }
+    //     path += `L ${endX - 20} ${endY}`;
+    //     break;
         
-      case 'output_left-input_top':
-        path += `L ${startX - 20} ${startY} `;
-        if (startY !== endY) {
-          path += `L ${startX - 20} ${endY - 20} `;
-        }
-        path += `L ${endX} ${endY - 20}`;
-        break;
+    //   case 'output_left-input_top':
+    //     path += `L ${startX - 20} ${startY} `;
+    //     if (startY !== endY) {
+    //       path += `L ${startX - 20} ${endY - 20} `;
+    //     }
+    //     path += `L ${endX} ${endY - 20}`;
+    //     break;
         
-      case 'output_left-input_right':
-        path += `L ${startX - 20} ${startY} `;
-        if (startY !== endY) {
-          path += `L ${startX - 20} ${endY} `;
-        }
-        path += `L ${endX + 20} ${endY}`;
-        break;
+    //   case 'output_left-input_right':
+    //     path += `L ${startX - 20} ${startY} `;
+    //     if (startY !== endY) {
+    //       path += `L ${startX - 20} ${endY} `;
+    //     }
+    //     path += `L ${endX + 20} ${endY}`;
+    //     break;
         
-      case 'output_left-input_bottom':
-        path += `L ${startX - 20} ${startY} `;
-        if (startY !== endY) {
-          path += `L ${startX - 20} ${endY + 20} `;
-        }
-        path += `L ${endX} ${endY + 20}`;
-        break;
+    //   case 'output_left-input_bottom':
+    //     path += `L ${startX - 20} ${startY} `;
+    //     if (startY !== endY) {
+    //       path += `L ${startX - 20} ${endY + 20} `;
+    //     }
+    //     path += `L ${endX} ${endY + 20}`;
+    //     break;
         
-      case 'output_top-input_left':
-        path += `L ${startX} ${startY - 20} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX - 20} ${startY - 20} `;
-        }
-        path += `L ${endX - 20} ${endY}`;
-        break;
+    //   case 'output_top-input_left':
+    //     path += `L ${startX} ${startY - 20} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${endX - 20} ${startY - 20} `;
+    //     }
+    //     path += `L ${endX - 20} ${endY}`;
+    //     break;
         
-      case 'output_top-input_top':
-        path += `L ${startX} ${startY - 20} `;
-        if (startY > endY) {
-          path += `L ${endX} ${startY - 20} `;
-        } else {
-          path += `L ${endX} ${endY - 20} `;
-        }
-        break;
+    //   case 'output_top-input_top':
+    //     path += `L ${startX} ${startY - 20} `;
+    //     if (startY > endY) {
+    //       path += `L ${endX} ${startY - 20} `;
+    //     } else {
+    //       path += `L ${endX} ${endY - 20} `;
+    //     }
+    //     break;
         
-      case 'output_top-input_right':
-        path += `L ${startX} ${startY - 20} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX + 20} ${startY - 20} `;
-        }
-        path += `L ${endX + 20} ${endY}`;
-        break;
+    //   case 'output_top-input_right':
+    //     path += `L ${startX} ${startY - 20} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${endX + 20} ${startY - 20} `;
+    //     }
+    //     path += `L ${endX + 20} ${endY}`;
+    //     break;
         
-      case 'output_top-input_bottom':
-        path += `L ${startX} ${startY - 20} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${startX} ${endY + 20} `;
-        }
-        path += `L ${endX} ${endY + 20}`;
-        break;
+    //   case 'output_top-input_bottom':
+    //     path += `L ${startX} ${startY - 20} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${startX} ${endY + 20} `;
+    //     }
+    //     path += `L ${endX} ${endY + 20}`;
+    //     break;
         
-      case 'output_right-input_left':
-        path += `L ${startX + 20} ${startY} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX - 20} ${startY} `;
-        }
-        path += `L ${endX - 20} ${endY}`;
-        break;
+    //   case 'output_right-input_left':
+    //     path += `L ${startX + 20} ${startY} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${endX - 20} ${startY} `;
+    //     }
+    //     path += `L ${endX - 20} ${endY}`;
+    //     break;
         
-      case 'output_right-input_top':
-        path += `L ${startX + 20} ${startY} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX} ${startY - 20} `;
-        }
-        path += `L ${endX} ${endY - 20}`;
-        break;
+    //   case 'output_right-input_top':
+    //     path += `L ${startX + 20} ${startY} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${endX} ${startY - 20} `;
+    //     }
+    //     path += `L ${endX} ${endY - 20}`;
+    //     break;
         
-      case 'output_right-input_right':
-        path += `L ${startX + 20} ${startY} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX + 20} ${startY} `;
-        }
-        path += `L ${endX + 20} ${endY}`;
-        break;
+    //   case 'output_right-input_right':
+    //     path += `L ${startX + 20} ${startY} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${endX + 20} ${startY} `;
+    //     }
+    //     path += `L ${endX + 20} ${endY}`;
+    //     break;
         
-      case 'output_right-input_bottom':
-        path += `L ${startX + 20} ${startY} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX} ${startY + 20} `;
-        }
-        path += `L ${endX} ${endY + 20}`;
-        break;
+    //   case 'output_right-input_bottom':
+    //     path += `L ${startX + 20} ${startY} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${endX} ${startY + 20} `;
+    //     }
+    //     path += `L ${endX} ${endY + 20}`;
+    //     break;
         
-      case 'output_bottom-input_left':
-        path += `L ${startX} ${startY + 20} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX - 20} ${startY + 20} `;
-        }
-        path += `L ${endX - 20} ${endY}`;
-        break;
+    //   case 'output_bottom-input_left':
+    //     path += `L ${startX} ${startY + 20} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${endX - 20} ${startY + 20} `;
+    //     }
+    //     path += `L ${endX - 20} ${endY}`;
+    //     break;
         
-      case 'output_bottom-input_top':
-        path += `L ${startX} ${startY + 20} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${startX} ${endY - 20} `;
-        }
-        path += `L ${endX} ${endY - 20}`;
-        break;
+    //   case 'output_bottom-input_top':
+    //     path += `L ${startX} ${startY + 20} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${startX} ${endY - 20} `;
+    //     }
+    //     path += `L ${endX} ${endY - 20}`;
+    //     break;
         
-      case 'output_bottom-input_right':
-        path += `L ${startX} ${startY + 20} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX + 20} ${startY + 20} `;
-        }
-        path += `L ${endX + 20} ${endY}`;
-        break;
+    //   case 'output_bottom-input_right':
+    //     path += `L ${startX} ${startY + 20} `;
+    //     if (startX !== endX || startY !== endY) {
+    //       path += `L ${endX + 20} ${startY + 20} `;
+    //     }
+    //     path += `L ${endX + 20} ${endY}`;
+    //     break;
         
-      case 'output_bottom-input_bottom':
-        path += `L ${startX} ${startY + 20} `;
-        if (startY > endY) {
-          path += `L ${endX} ${startY + 20} `;
-        } else {
-          path += `L ${endX} ${endY + 20} `;
-        }
-        break;
+    //   case 'output_bottom-input_bottom':
+    //     path += `L ${startX} ${startY + 20} `;
+    //     if (startY > endY) {
+    //       path += `L ${endX} ${startY + 20} `;
+    //     } else {
+    //       path += `L ${endX} ${endY + 20} `;
+    //     }
+    //     break;
         
-      default:
-        break;
-    }
-    
+    //   default:
+    //     break;
+    // }
+    path += this.getInitialPath(startX, startY, endX, endY, output);
     path += `L ${endX} ${endY} `;
     path += this.drawArrowHead(endX, endY, input);
     
     return path;
+  }
+
+  getInitialPath(startX: number, startY: number, endX: number, endY: number, output: string) {
+    let path: string = '';
+    const halfX = (startX + endX) / 2;
+    const halfY = (startY + endY) / 2;
+    switch (output) {
+      case 'output_left':
+        if (startX > endX) {
+          path += `L ${halfX} ${startY} `;
+        } else {
+          path += `L ${startX - 40} ${startY} `;
+        }
+        break;
+      case 'output_top':
+        if (startY > endY) {
+          path += `L ${startX} ${halfY} `;
+        } else {
+          path += `L ${startX} ${startY - 40} `;
+        }
+        break;
+      case 'output_right':
+        if (startX > endX) {
+          path += `L ${halfX} ${startY} `;
+        } else {
+          path += `L ${startX + 40} ${startY} `;
+        }
+        break;
+      case 'output_bottom':
+        if (startY > endY) {
+          path += `L ${startX} ${halfY} `;
+        } else {
+          path += `L ${startX} ${startY + 40} `;
+        }
+        break;
+    }
+    return path;
+  }
+
+  getFinalPath(startX: number, startY: number, endX: number, endY: number, input: string) {
+    
   }
 
   drawArrowHead(endX: number, endY: number, input: string) {
