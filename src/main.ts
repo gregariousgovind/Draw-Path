@@ -284,6 +284,7 @@ export class App {
         }
         path += `L ${endX - 20} ${endY}`;
         break;
+        
       case 'output_left-input_top':
         path += `L ${startX - 20} ${startY} `;
         if (startY !== endY) {
@@ -291,6 +292,7 @@ export class App {
         }
         path += `L ${endX} ${endY - 20}`;
         break;
+        
       case 'output_left-input_right':
         path += `L ${startX - 20} ${startY} `;
         if (startY !== endY) {
@@ -298,6 +300,7 @@ export class App {
         }
         path += `L ${endX + 20} ${endY}`;
         break;
+        
       case 'output_left-input_bottom':
         path += `L ${startX - 20} ${startY} `;
         if (startY !== endY) {
@@ -305,87 +308,112 @@ export class App {
         }
         path += `L ${endX} ${endY + 20}`;
         break;
+        
       case 'output_top-input_left':
-        path += `L ${startX} ${startY} `;
+        path += `L ${startX} ${startY - 20} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX - 20} ${startY - 20} `;
+        }
+        path += `L ${endX - 20} ${endY}`;
+        break;
+        
+      case 'output_top-input_top':
+        path += `L ${startX} ${startY - 20} `;
+        if (startY > endY) {
+          path += `L ${endX} ${startY - 20} `;
+        } else {
+          path += `L ${endX} ${endY - 20} `;
+        }
+        break;
+        
+      case 'output_top-input_right':
+        path += `L ${startX} ${startY - 20} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX + 20} ${startY - 20} `;
+        }
+        path += `L ${endX + 20} ${endY}`;
+        break;
+        
+      case 'output_top-input_bottom':
+        path += `L ${startX} ${startY - 20} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${startX} ${endY + 20} `;
+        }
+        path += `L ${endX} ${endY + 20}`;
+        break;
+        
+      case 'output_right-input_left':
+        path += `L ${startX + 20} ${startY} `;
         if (startX !== endX || startY !== endY) {
           path += `L ${endX - 20} ${startY} `;
         }
-        if (endX - 20 !== endX || startY !== endY) {
-          path += `L ${endX - 20} ${endY} `;
-        }
+        path += `L ${endX - 20} ${endY}`;
         break;
-      case 'output_top-input_top':
+        
+      case 'output_right-input_top':
+        path += `L ${startX + 20} ${startY} `;
         if (startX !== endX || startY !== endY) {
+          path += `L ${endX} ${startY - 20} `;
         }
+        path += `L ${endX} ${endY - 20}`;
         break;
-      case 'output_top-input_right':
-        path += `L ${startX} ${startY} `;
+        
+      case 'output_right-input_right':
+        path += `L ${startX + 20} ${startY} `;
         if (startX !== endX || startY !== endY) {
           path += `L ${endX + 20} ${startY} `;
         }
-        if (endX + 20 !== endX || startY !== endY) {
-        }
+        path += `L ${endX + 20} ${endY}`;
         break;
-      case 'output_top-input_bottom':
-        path += `L ${startX} ${startY} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${startX} ${endY + 20} `;
-        }
-        if (startX !== endX || endY + 20 !== endY) {
-        }
-        break;
-      case 'output_right-input_left':
-        path += `L ${startX} ${startY} `;
-        if (startX !== endX || startY !== endY) {
-          path += `L ${endX - 20} ${startY} `;
-        }
-        if (endX - 20 !== endX || startY !== endY) {
-          path += `L ${endX - 20} ${endY} `;
-        }
-        break;
-      case 'output_right-input_top':
-        break;
-      case 'output_right-input_right':
-        if (startX !== endX || startY !== endY) {
-        }
-        break;
+        
       case 'output_right-input_bottom':
-        path += `L ${startX} ${startY} `;
+        path += `L ${startX + 20} ${startY} `;
         if (startX !== endX || startY !== endY) {
-          path += `L ${startX} ${endY + 20} `;
+          path += `L ${endX} ${startY + 20} `;
         }
-        if (startX !== endX || endY + 20 !== endY) {
-        }
+        path += `L ${endX} ${endY + 20}`;
         break;
+        
       case 'output_bottom-input_left':
-        path += `L ${startX} ${startY} `;
+        path += `L ${startX} ${startY + 20} `;
         if (startX !== endX || startY !== endY) {
-          path += `L ${endX - 20} ${startY} `;
+          path += `L ${endX - 20} ${startY + 20} `;
         }
-        if (endX - 20 !== endX || startY !== endY) {
-          path += `L ${endX - 20} ${endY} `;
-        }
+        path += `L ${endX - 20} ${endY}`;
         break;
+        
       case 'output_bottom-input_top':
-        path += `L ${startX} ${startY} `;
+        path += `L ${startX} ${startY + 20} `;
         if (startX !== endX || startY !== endY) {
           path += `L ${startX} ${endY - 20} `;
         }
-        if (startX !== endX || endY - 20 !== endY) {
-        }
+        path += `L ${endX} ${endY - 20}`;
         break;
+        
       case 'output_bottom-input_right':
-        path += `L ${startX} ${startY} `;
+        path += `L ${startX} ${startY + 20} `;
         if (startX !== endX || startY !== endY) {
+          path += `L ${endX + 20} ${startY + 20} `;
+        }
+        path += `L ${endX + 20} ${endY}`;
+        break;
+        
+      case 'output_bottom-input_bottom':
+        path += `L ${startX} ${startY + 20} `;
+        if (startY > endY) {
+          path += `L ${endX} ${startY + 20} `;
+        } else {
+          path += `L ${endX} ${endY + 20} `;
         }
         break;
-      case 'output_bottom-input_bottom':
-        break;
+        
       default:
         break;
     }
+    
     path += `L ${endX} ${endY} `;
-    path += this.drawArrowHead(endX, endY, input)
+    path += this.drawArrowHead(endX, endY, input);
+    
     return path;
   }
 
