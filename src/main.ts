@@ -410,51 +410,59 @@ export class App {
     //     break;
     // }
     path += this.getInitialPath(startX, startY, endX, endY, output);
+
+    path += this.getFinalPath(startX, startY, endX, endY, input);
+
     path += `L ${endX} ${endY} `;
     path += this.drawArrowHead(endX, endY, input);
     
     return path;
   }
 
-  getInitialPath(startX: number, startY: number, endX: number, endY: number, output: string) {
+  getInitialPath(startX: number, startY: number, endX: number, endY: number, output: string): string {
     let path: string = '';
     const halfX = (startX + endX) / 2;
     const halfY = (startY + endY) / 2;
+    const offset = 40;
+
     switch (output) {
       case 'output_left':
-        if (startX > endX) {
-          path += `L ${halfX} ${startY} `;
-        } else {
-          path += `L ${startX - 40} ${startY} `;
-        }
+        path += (startX > endX) ? `L ${halfX} ${startY} ` : `L ${startX - offset} ${startY} `;
         break;
       case 'output_top':
-        if (startY > endY) {
-          path += `L ${startX} ${halfY} `;
-        } else {
-          path += `L ${startX} ${startY - 40} `;
-        }
+        path += (startY > endY) ? `L ${startX} ${halfY} ` : `L ${startX} ${startY - offset} `;
         break;
       case 'output_right':
-        if (startX > endX) {
-          path += `L ${halfX} ${startY} `;
-        } else {
-          path += `L ${startX + 40} ${startY} `;
-        }
+        path += (startX > endX) ? `L ${halfX} ${startY} ` : `L ${startX + offset} ${startY} `;
         break;
       case 'output_bottom':
-        if (startY > endY) {
-          path += `L ${startX} ${halfY} `;
-        } else {
-          path += `L ${startX} ${startY + 40} `;
-        }
+        path += (startY > endY) ? `L ${startX} ${halfY} ` : `L ${startX} ${startY + offset} `;
         break;
     }
     return path;
   }
 
   getFinalPath(startX: number, startY: number, endX: number, endY: number, input: string) {
-    
+    let path: string = '';
+    const halfX = (startX + endX) / 2;
+    const halfY = (startY + endY) / 2;
+    const offset = 40;
+
+    switch (input) {
+      case 'input_left':
+        path += (startX > endX) ? `L ${halfX} ${endY} ` : `L ${endX - offset} ${endY} `;
+        break;
+      case 'input_top':
+        path += (startY > endY) ? `L ${endX} ${halfY} ` : `L ${endX} ${endY - offset} `;
+        break;
+      case 'input_right':
+        path += (startX > endX) ? `L ${halfX} ${endY} ` : `L ${endX + offset} ${endY} `;
+        break;
+      case 'input_bottom':
+        path += (startY > endY) ? `L ${endX} ${halfY} ` : `L ${endX} ${endY + offset} `;
+        break;
+    }
+    return path;
   }
 
   drawArrowHead(endX: number, endY: number, input: string) {
