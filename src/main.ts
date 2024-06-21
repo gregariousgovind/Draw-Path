@@ -283,7 +283,7 @@ export class App {
     //     }
     //     path += `L ${endX - 20} ${endY}`;
     //     break;
-        
+
     //   case 'output_left-input_top':
     //     path += `L ${startX - 20} ${startY} `;
     //     if (startY !== endY) {
@@ -291,7 +291,7 @@ export class App {
     //     }
     //     path += `L ${endX} ${endY - 20}`;
     //     break;
-        
+
     //   case 'output_left-input_right':
     //     path += `L ${startX - 20} ${startY} `;
     //     if (startY !== endY) {
@@ -299,7 +299,7 @@ export class App {
     //     }
     //     path += `L ${endX + 20} ${endY}`;
     //     break;
-        
+
     //   case 'output_left-input_bottom':
     //     path += `L ${startX - 20} ${startY} `;
     //     if (startY !== endY) {
@@ -307,7 +307,7 @@ export class App {
     //     }
     //     path += `L ${endX} ${endY + 20}`;
     //     break;
-        
+
     //   case 'output_top-input_left':
     //     path += `L ${startX} ${startY - 20} `;
     //     if (startX !== endX || startY !== endY) {
@@ -315,7 +315,7 @@ export class App {
     //     }
     //     path += `L ${endX - 20} ${endY}`;
     //     break;
-        
+
     //   case 'output_top-input_top':
     //     path += `L ${startX} ${startY - 20} `;
     //     if (startY > endY) {
@@ -324,7 +324,7 @@ export class App {
     //       path += `L ${endX} ${endY - 20} `;
     //     }
     //     break;
-        
+
     //   case 'output_top-input_right':
     //     path += `L ${startX} ${startY - 20} `;
     //     if (startX !== endX || startY !== endY) {
@@ -332,7 +332,7 @@ export class App {
     //     }
     //     path += `L ${endX + 20} ${endY}`;
     //     break;
-        
+
     //   case 'output_top-input_bottom':
     //     path += `L ${startX} ${startY - 20} `;
     //     if (startX !== endX || startY !== endY) {
@@ -340,7 +340,7 @@ export class App {
     //     }
     //     path += `L ${endX} ${endY + 20}`;
     //     break;
-        
+
     //   case 'output_right-input_left':
     //     path += `L ${startX + 20} ${startY} `;
     //     if (startX !== endX || startY !== endY) {
@@ -348,7 +348,7 @@ export class App {
     //     }
     //     path += `L ${endX - 20} ${endY}`;
     //     break;
-        
+
     //   case 'output_right-input_top':
     //     path += `L ${startX + 20} ${startY} `;
     //     if (startX !== endX || startY !== endY) {
@@ -356,7 +356,7 @@ export class App {
     //     }
     //     path += `L ${endX} ${endY - 20}`;
     //     break;
-        
+
     //   case 'output_right-input_right':
     //     path += `L ${startX + 20} ${startY} `;
     //     if (startX !== endX || startY !== endY) {
@@ -364,7 +364,7 @@ export class App {
     //     }
     //     path += `L ${endX + 20} ${endY}`;
     //     break;
-        
+
     //   case 'output_right-input_bottom':
     //     path += `L ${startX + 20} ${startY} `;
     //     if (startX !== endX || startY !== endY) {
@@ -372,7 +372,7 @@ export class App {
     //     }
     //     path += `L ${endX} ${endY + 20}`;
     //     break;
-        
+
     //   case 'output_bottom-input_left':
     //     path += `L ${startX} ${startY + 20} `;
     //     if (startX !== endX || startY !== endY) {
@@ -380,7 +380,7 @@ export class App {
     //     }
     //     path += `L ${endX - 20} ${endY}`;
     //     break;
-        
+
     //   case 'output_bottom-input_top':
     //     path += `L ${startX} ${startY + 20} `;
     //     if (startX !== endX || startY !== endY) {
@@ -388,7 +388,7 @@ export class App {
     //     }
     //     path += `L ${endX} ${endY - 20}`;
     //     break;
-        
+
     //   case 'output_bottom-input_right':
     //     path += `L ${startX} ${startY + 20} `;
     //     if (startX !== endX || startY !== endY) {
@@ -396,7 +396,7 @@ export class App {
     //     }
     //     path += `L ${endX + 20} ${endY}`;
     //     break;
-        
+
     //   case 'output_bottom-input_bottom':
     //     path += `L ${startX} ${startY + 20} `;
     //     if (startY > endY) {
@@ -405,7 +405,7 @@ export class App {
     //       path += `L ${endX} ${endY + 20} `;
     //     }
     //     break;
-        
+
     //   default:
     //     break;
     // }
@@ -415,7 +415,7 @@ export class App {
 
     path += `L ${endX} ${endY} `;
     path += this.drawArrowHead(endX, endY, input);
-    
+
     return path;
   }
 
@@ -427,22 +427,38 @@ export class App {
 
     switch (output) {
       case 'output_left':
-        path += (startX > endX) ? `L ${halfX} ${startY} ` : `L ${startX - offset} ${startY} `;
+        if (startX > endX) {
+          path += `L ${halfX} ${startY} `;
+        } else {
+          path += `L ${startX - offset} ${startY} `;
+        }
         break;
       case 'output_top':
-        path += (startY > endY) ? `L ${startX} ${halfY} ` : `L ${startX} ${startY - offset} `;
+        if (startY > endY) {
+          path += `L ${startX} ${halfY} `;
+        } else {
+          path += `L ${startX} ${startY - offset} `;
+        }
         break;
       case 'output_right':
-        path += (startX > endX) ? `L ${halfX} ${startY} ` : `L ${startX + offset} ${startY} `;
+        if (startX > endX) {
+          path += `L ${halfX} ${startY} `;
+        } else {
+          path += `L ${startX + offset} ${startY} `;
+        }
         break;
       case 'output_bottom':
-        path += (startY > endY) ? `L ${startX} ${halfY} ` : `L ${startX} ${startY + offset} `;
+        if (startY > endY) {
+          path += `L ${startX} ${halfY} `;
+        } else {
+          path += `L ${startX} ${startY + offset} `;
+        }
         break;
     }
     return path;
   }
 
-  getFinalPath(startX: number, startY: number, endX: number, endY: number, input: string) {
+  getFinalPath(startX: number, startY: number, endX: number, endY: number, input: string): string {
     let path: string = '';
     const halfX = (startX + endX) / 2;
     const halfY = (startY + endY) / 2;
@@ -450,16 +466,32 @@ export class App {
 
     switch (input) {
       case 'input_left':
-        path += (startX > endX) ? `L ${halfX} ${endY} ` : `L ${endX - offset} ${endY} `;
+        if (startX > endX) {
+          path += `L ${halfX} ${endY} `;
+        } else {
+          path += `L ${endX - offset} ${endY} `;
+        }
         break;
       case 'input_top':
-        path += (startY > endY) ? `L ${endX} ${halfY} ` : `L ${endX} ${endY - offset} `;
+        if (startY > endY) {
+          path += `L ${endX} ${halfY} `;
+        } else {
+          path += `L ${endX} ${endY + offset} `;
+        }
         break;
       case 'input_right':
-        path += (startX > endX) ? `L ${halfX} ${endY} ` : `L ${endX + offset} ${endY} `;
+        if (startX > endX) {
+          path += `L ${halfX} ${endY} `;
+        } else {
+          path += `L ${endX + offset} ${endY} `;
+        }
         break;
       case 'input_bottom':
-        path += (startY > endY) ? `L ${endX} ${halfY} ` : `L ${endX} ${endY + offset} `;
+        if (startY > endY) {
+          path += `L ${endX} ${halfY} `;
+        } else {
+          path += `L ${endX} ${endY - offset} `;
+        }
         break;
     }
     return path;
