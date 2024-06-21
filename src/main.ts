@@ -282,7 +282,6 @@ export class App {
           path += `L ${startX - 20} ${endY} `;
         }
         path += `L ${endX - 20} ${endY}`;
-        path += `L ${endX} ${endY}`;
         break;
       case 'output_left-input_top':
         path += `L ${startX - 20} ${startY} `;
@@ -290,7 +289,6 @@ export class App {
           path += `L ${startX - 20} ${endY - 20} `;
         }
         path += `L ${endX} ${endY - 20}`;
-        path += `L ${endX} ${endY}`;
         break;
       case 'output_left-input_right':
         path += `L ${startX - 20} ${startY} `;
@@ -298,7 +296,6 @@ export class App {
           path += `L ${startX - 20} ${endY} `;
         }
         path += `L ${endX + 20} ${endY}`;
-        path += `L ${endX} ${endY}`;
         break;
       case 'output_left-input_bottom':
         path += `L ${startX - 20} ${startY} `;
@@ -306,7 +303,6 @@ export class App {
           path += `L ${startX - 20} ${endY + 20} `;
         }
         path += `L ${endX} ${endY + 20}`;
-        path += `L ${endX} ${endY}`;
         break;
       case 'output_top-input_left':
         path += `L ${startX} ${startY} `;
@@ -319,7 +315,6 @@ export class App {
         break;
       case 'output_top-input_top':
         if (startX !== endX || startY !== endY) {
-          path += `L ${endX} ${endY} `;
         }
         break;
       case 'output_top-input_right':
@@ -328,7 +323,6 @@ export class App {
           path += `L ${endX + 20} ${startY} `;
         }
         if (endX + 20 !== endX || startY !== endY) {
-          path += `L ${endX} ${endY} `;
         }
         break;
       case 'output_top-input_bottom':
@@ -337,7 +331,6 @@ export class App {
           path += `L ${startX} ${endY + 20} `;
         }
         if (startX !== endX || endY + 20 !== endY) {
-          path += `L ${endX} ${endY} `;
         }
         break;
       case 'output_right-input_left':
@@ -353,7 +346,6 @@ export class App {
         break;
       case 'output_right-input_right':
         if (startX !== endX || startY !== endY) {
-          path += `L ${endX} ${endY} `;
         }
         break;
       case 'output_right-input_bottom':
@@ -362,7 +354,6 @@ export class App {
           path += `L ${startX} ${endY + 20} `;
         }
         if (startX !== endX || endY + 20 !== endY) {
-          path += `L ${endX} ${endY} `;
         }
         break;
       case 'output_bottom-input_left':
@@ -380,13 +371,11 @@ export class App {
           path += `L ${startX} ${endY - 20} `;
         }
         if (startX !== endX || endY - 20 !== endY) {
-          path += `L ${endX} ${endY} `;
         }
         break;
       case 'output_bottom-input_right':
         path += `L ${startX} ${startY} `;
         if (startX !== endX || startY !== endY) {
-          path += `L ${endX} ${endY} `;
         }
         break;
       case 'output_bottom-input_bottom':
@@ -394,6 +383,7 @@ export class App {
       default:
         break;
     }
+    path += `L ${endX} ${endY} `;
     path += this.drawArrowHead(endX, endY, input)
     return path;
   }
