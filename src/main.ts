@@ -199,7 +199,7 @@ const combinations = [
       </select>
       <button type="button" (click)="createTestCurvature(+inputX.value, +inputY.value, +outputX.value, +outputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
     </form>
-    <svg width="300" height="300">
+    <svg width="400" height="400">
       <path
         id="test-path-id"
         stroke="black"
@@ -210,7 +210,7 @@ const combinations = [
     <br>
     <ng-container *ngFor="let combination of combinations">
       <h2>From: {{ combination.output }};<br>To: {{ combination.input }};</h2>
-      <svg id="{{combination.id}}" width="300" height="300" >
+      <svg id="{{combination.id}}" width="400" height="400" >
         <path
           [attr.d]="createCurvature(combination.start.x, combination.start.y, combination.end.x, combination.end.y, 5, combination.output, combination.input)"
           stroke="black"
@@ -269,74 +269,143 @@ export class App {
   ): string {
     let halfX = startX + (endX - startX) / 2;
     let path = `M ${startX} ${startY} `;
-
+    
     switch (`${output}-${input}`) {
       case 'output_left-input_left':
-        path += "L " + (startX - 20) + " " + startY + " ";
+        path += `L ${startX - 20} ${startY} `;
         if (startY === endY) {
-          path += "L " + (startX - 20) + " " + (startY + 20) + " ";
-          path += "L " + (endX - 20) + " " + (endY + 20);
-        } 
-        else if (startX > endX) {
-          path += "L " + (endX - 20) + " " + startY + " ";
+          path += `L ${startX - 20} ${startY + 20} `;
+          path += `L ${endX - 20} ${endY + 20}`;
+        } else if (startX > endX) {
+          path += `L ${endX - 20} ${startY} `;
+        } else if (startY !== endY) {
+          path += `L ${startX - 20} ${endY} `;
         }
-        else if (startY !== endY) {
-          path += "L " + (startX - 20) + " " + endY + " ";
-        }
-        path += "L " + (endX - 20) + " " + endY;
-        path += "L " + endX + " " + endY;
+        path += `L ${endX - 20} ${endY}`;
+        path += `L ${endX} ${endY}`;
         path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'output_left-input_top':
-        path += "L " + (startX - 20) + " " + startY + " ";
+        path += `L ${startX - 20} ${startY} `;
         if (startY !== endY) {
-          path += "L " + (startX - 20) + " " + (endY - 20) + " ";
+          path += `L ${startX - 20} ${endY - 20} `;
         }
-        path += "L " + endX + " " + (endY - 20);
-        path += "L " + endX + " " + endY;
+        path += `L ${endX} ${endY - 20}`;
+        path += `L ${endX} ${endY}`;
         path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'output_left-input_right':
-        path += "L " + (startX - 20) + " " + startY + " ";
+        path += `L ${startX - 20} ${startY} `;
         if (startY !== endY) {
-          path += "L " + (startX - 20) + " " + endY + " ";
+          path += `L ${startX - 20} ${endY} `;
         }
-        path += "L " + (endX + 20) + " " + endY;
-        path += "L " + endX + " " + endY;
+        path += `L ${endX + 20} ${endY}`;
+        path += `L ${endX} ${endY}`;
         path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'output_left-input_bottom':
-        path += "L " + (startX - 20) + " " + startY + " ";
+        path += `L ${startX - 20} ${startY} `;
         if (startY !== endY) {
-          path += "L " + (startX - 20) + " " + (endY + 20) + " ";
+          path += `L ${startX - 20} ${endY + 20} `;
         }
-        path += "L " + endX + " " + (endY + 20);
-        path += "L " + endX + " " + endY;
+        path += `L ${endX} ${endY + 20}`;
+        path += `L ${endX} ${endY}`;
         path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
       case 'output_top-input_left':
+        path += `L ${startX} ${startY} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX - 20} ${startY} `;
+        }
+        if (endX - 20 !== endX || startY !== endY) {
+          path += `L ${endX - 20} ${endY} `;
+        }
+        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'output_top-input_top':
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX} ${endY} `;
+        }
+        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'output_top-input_right':
+        path += `L ${startX} ${startY} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX + 20} ${startY} `;
+        }
+        if (endX + 20 !== endX || startY !== endY) {
+          path += `L ${endX} ${endY} `;
+        }
+        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'output_top-input_bottom':
+        path += `L ${startX} ${startY} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${startX} ${endY + 20} `;
+        }
+        if (startX !== endX || endY + 20 !== endY) {
+          path += `L ${endX} ${endY} `;
+        }
+        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
       case 'output_right-input_left':
+        path += `L ${startX} ${startY} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX - 20} ${startY} `;
+        }
+        if (endX - 20 !== endX || startY !== endY) {
+          path += `L ${endX - 20} ${endY} `;
+        }
+        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'output_right-input_top':
+        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'output_right-input_right':
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX} ${endY} `;
+        }
+        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'output_right-input_bottom':
+        path += `L ${startX} ${startY} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${startX} ${endY + 20} `;
+        }
+        if (startX !== endX || endY + 20 !== endY) {
+          path += `L ${endX} ${endY} `;
+        }
+        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
       case 'output_bottom-input_left':
+        path += `L ${startX} ${startY} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX - 20} ${startY} `;
+        }
+        if (endX - 20 !== endX || startY !== endY) {
+          path += `L ${endX - 20} ${endY} `;
+        }
+        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'output_bottom-input_top':
+        path += `L ${startX} ${startY} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${startX} ${endY - 20} `;
+        }
+        if (startX !== endX || endY - 20 !== endY) {
+          path += `L ${endX} ${endY} `;
+        }
+        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'output_bottom-input_right':
+        path += `L ${startX} ${startY} `;
+        if (startX !== endX || startY !== endY) {
+          path += `L ${endX} ${endY} `;
+        }
+        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'output_bottom-input_bottom':
+        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
       default:
         break;
