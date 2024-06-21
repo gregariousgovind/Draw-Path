@@ -3,20 +3,6 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import 'zone.js';
 
-const inputs = {
-  input_left: {},
-  input_top: {},
-  input_right: {},
-  input_bottom: {},
-};
-
-const outputs = {
-  output_left: {},
-  output_top: {},
-  output_right: {},
-  output_bottom: {},
-};
-
 const combinations = [
   {
     id: 'b02c0463-4793-4ab2-814d-fdd71b50262d',
@@ -194,8 +180,34 @@ const combinations = [
   imports: [CommonModule],
   template: `
     <h1>Draw Path</h1>
+    <form>
+      <label for="inputX">Input X:</label>
+      <input #inputX type="number" min="0" max="300" id="inputX" name="inputX" required>
+      <label for="inputY">Input Y:</label>
+      <input #inputY type="number" min="0" max="300" id="inputY" name="inputY" required>
+      <label for="outputX">Output X:</label>
+      <input #outputX type="number" min="0" max="300" id="outputX" name="outputX" required>
+      <label for="outputY">Output Y:</label>
+      <input #outputY type="number" min="0" max="300" id="outputY" name="outputY" required>
+      <label for="inputSelect">Input:</label>
+      <select #inputSelect id="inputSelect">
+        <option *ngFor="let input of inputs | keyvalue" [value]="input.key">{{ input.key }}</option>
+      </select>
+      <label for="outputSelect">Output:</label>
+      <select #outputSelect id="outputSelect">
+        <option *ngFor="let output of outputs | keyvalue" [value]="output.key">{{ output.key }}</option>
+      </select>
+      <button type="button" (click)="createTestCurvature(inputX.value, inputY.value, outputX.value, outputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
+    </form>
+    <svg id="test-path-id" width="300" height="300" >
+      <path
+        stroke="black"
+        fill="transparent"
+      />
+    </svg>
+    <br>
     <ng-container *ngFor="let combination of combinations">
-      <h2>From: {{ combination.output }};<br />To: {{ combination.input }};</h2>
+      <h2>From: {{ combination.output }};<br>To: {{ combination.input }};</h2>
       <svg id="{{combination.id}}" width="300" height="300" >
         <path
           [attr.d]="createCurvature(combination.start.x, combination.start.y, combination.end.x, combination.end.y, 5, combination.output, combination.input)"
@@ -203,12 +215,46 @@ const combinations = [
           fill="transparent"
         />
       </svg>
-      <hr />
     </ng-container>
   `,
 })
 export class App {
   combinations: any[] = combinations;
+
+  inputs = {
+    input_left: {},
+    input_top: {},
+    input_right: {},
+    input_bottom: {},
+  };
+
+  outputs = {
+    output_left: {},
+    output_top: {},
+    output_right: {},
+    output_bottom: {},
+  };
+
+  createTestCurvature(
+    startX: number,
+    startY: number,
+    endX: number,
+    endY: number,
+    radius: number,
+    output: string,
+    input: string
+  ) {
+    let path = this.createCurvature(
+      startX,
+      startY,
+      endX,
+      endY,
+      radius,
+      output,
+      input
+    )
+    document.getElementById("test-path-id")!.setAttribute("d", path);
+  }
 
   createCurvature(
     startX: number,
@@ -222,32 +268,69 @@ export class App {
     let halfX = startX + (endX - startX) / 2;
     let path = `M ${startX} ${startY} `;
 
-    let gap = Math.min(Math.abs(startY - endY) / 2, radius * 2);
-    radius = Math.min(Math.abs(startY - endY) / 2, radius);
-    path += `L ${halfX - gap} ${startY} `;
-    path += this.createHalfCirclePath(
-      halfX - gap,
-      startY,
-      halfX,
-      startY - gap,
-      radius
-    );
-    if (startY !== endY) {
-      path += `L ${halfX} ${endY + gap} `;
-      path += this.createHalfCirclePath(
-        halfX,
-        endY + gap,
-        halfX + gap,
-        endY,
-        -radius
-      );
+    switch (`${output}-${input}`) {
+      case 'output_left-input_left':
+        path += "L " + (startX - 20) + " " + startY + " ";
+        if (startY !== endY) {
+          path += "L " + (startX - 20) + " " + endY + " ";
+        }
+        path += "L " + endX + " " + endY;
+        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
+        break;
+      case 'output_left-input_top':
+        path += "L " + (startX - 20) + " " + startY + " ";
+        if (startY !== endY) {
+          path += "L " + (startX - 20) + " " + (endY - 20) + " ";
+        }
+        path += "L " + endX + " " + (endY - 20);
+        path += "L " + endX + " " + endY;
+        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
+        break;
+      case 'output_left-input_right':
+        path += "L " + (startX - 20) + " " + startY + " ";
+        if (startY !== endY) {
+          path += "L " + (startX - 20) + " " + endY + " ";
+        }
+        path += "L " + (endX + 20) + " " + endY;
+        path += "L " + endX + " " + endY;
+        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
+        break;
+      case 'output_left-input_bottom':
+        path += "L " + (startX - 20) + " " + startY + " ";
+        if (startY !== endY) {
+          path += "L " + (startX - 20) + " " + (endY + 20) + " ";
+        }
+        path += "L " + endX + " " + (endY + 20);
+        path += "L " + endX + " " + endY;
+        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
+        break;
+      case 'output_top-input_left':
+        break;
+      case 'output_top-input_top':
+        break;
+      case 'output_top-input_right':
+        break;
+      case 'output_top-input_bottom':
+        break;
+      case 'output_right-input_left':
+        break;
+      case 'output_right-input_top':
+        break;
+      case 'output_right-input_right':
+        break;
+      case 'output_right-input_bottom':
+        break;
+      case 'output_bottom-input_left':
+        break;
+      case 'output_bottom-input_top':
+        break;
+      case 'output_bottom-input_right':
+        break;
+      case 'output_bottom-input_bottom':
+        break;
+      default:
+        break;
     }
-    path += `L ${endX} ${endY}`;
-
-    path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${
-      endY + 8
-    }`;
-
     return path;
   }
 
