@@ -182,20 +182,20 @@ const combinations = [
     <h1>Draw Path</h1>
     <form>
       <label for="inputX">Input X:</label>
-      <input #inputX type="number" min="0" max="300" id="inputX" name="inputX" required>
+      <input #inputX type="number" value="250" min="0" max="300" id="inputX" name="inputX" required>
       <label for="inputY">Input Y:</label>
-      <input #inputY type="number" min="0" max="300" id="inputY" name="inputY" required>
+      <input #inputY type="number" value="250" min="0" max="300" id="inputY" name="inputY" required>
       <label for="outputX">Output X:</label>
-      <input #outputX type="number" min="0" max="300" id="outputX" name="outputX" required>
+      <input #outputX type="number" value="50" min="0" max="300" id="outputX" name="outputX" required>
       <label for="outputY">Output Y:</label>
-      <input #outputY type="number" min="0" max="300" id="outputY" name="outputY" required>
+      <input #outputY type="number" value="50" min="0" max="300" id="outputY" name="outputY" required>
       <label for="inputSelect">Input:</label>
-      <select #inputSelect id="inputSelect">
-        <option *ngFor="let input of inputs | keyvalue" [value]="input.key">{{ input.key }}</option>
+      <select #inputSelect id="inputSelect" value="input_left">
+        <option *ngFor="let input of inputs | keyvalue">{{ input.key }}</option>
       </select>
       <label for="outputSelect">Output:</label>
-      <select #outputSelect id="outputSelect">
-        <option *ngFor="let output of outputs | keyvalue" [value]="output.key">{{ output.key }}</option>
+      <select #outputSelect id="outputSelect" value="output_left">
+        <option *ngFor="let output of outputs | keyvalue">{{ output.key }}</option>
       </select>
       <button type="button" (click)="createTestCurvature(+inputX.value, +inputY.value, +outputX.value, +outputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
     </form>
@@ -273,9 +273,17 @@ export class App {
     switch (`${output}-${input}`) {
       case 'output_left-input_left':
         path += "L " + (startX - 20) + " " + startY + " ";
-        if (startY !== endY) {
+        if (startY === endY) {
+          path += "L " + (startX - 20) + " " + (startY + 20) + " ";
+          path += "L " + (endX - 20) + " " + (endY + 20);
+        } 
+        else if (startX > endX) {
+          path += "L " + (endX - 20) + " " + startY + " ";
+        }
+        else if (startY !== endY) {
           path += "L " + (startX - 20) + " " + endY + " ";
         }
+        path += "L " + (endX - 20) + " " + endY;
         path += "L " + endX + " " + endY;
         path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
