@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import 'zone.js';
 
 const inputs = {
@@ -190,28 +191,24 @@ const combinations = [
 @Component({
   selector: 'app-root',
   standalone: true,
+  imports: [CommonModule],
   template: `
-  <div class="controls">
-    <label for="curvatureType">Curvature Type:</label>
-    <select #curvatureType id="curvatureType">
-      <option value="open">Open</option>
-      <option value="close">Close</option>
-      <option value="other">Other</option>
-      <option value="default">Default</option>
-    </select>
-    <button (click)="drawPath(curvatureType.value)">Draw Path</button>
-  </div>
-
-  <svg width="500" height="300" *ngFor="let combination of combinations;">
-    <path id="curvedPath" d="" stroke="black" fill="transparent" />
-  </svg>
+    <h1>Draw Path</h1>
+    <ng-container *ngFor="let combination of combinations">
+      <h2>From: {{ combination.output }};<br />To: {{ combination.input }};</h2>
+      <svg id="{{combination.id}}" width="300" height="300" >
+        <path
+          [attr.d]="createCurvature(combination.start.x, combination.start.y, combination.end.x, combination.end.y, 5, combination.output, combination.input)"
+          stroke="black"
+          fill="transparent"
+        />
+      </svg>
+      <hr />
+    </ng-container>
   `,
 })
 export class App {
-  combinations: any[] = [];
-  constructor() {
-    this.combinations = combinations;
-  }
+  combinations: any[] = combinations;
 
   createCurvature(
     startX: number,
@@ -219,35 +216,33 @@ export class App {
     endX: number,
     endY: number,
     radius: number,
-    curvatureType: string
+    output: string,
+    input: string
   ): string {
     let halfX = startX + (endX - startX) / 2;
     let path = `M ${startX} ${startY} `;
 
-    switch (curvatureType) {
-      default:
-        let gap = Math.min(Math.abs(startY - endY) / 2, radius * 2);
-        radius = Math.min(Math.abs(startY - endY) / 2, radius);
-        path += `L ${halfX - gap} ${startY} `;
-        path += this.createHalfCirclePath(
-          halfX - gap,
-          startY,
-          halfX,
-          startY - gap,
-          radius
-        );
-        if (startY !== endY) {
-          path += `L ${halfX} ${endY + gap} `;
-          path += this.createHalfCirclePath(
-            halfX,
-            endY + gap,
-            halfX + gap,
-            endY,
-            -radius
-          );
-        }
-        path += `L ${endX} ${endY}`;
+    let gap = Math.min(Math.abs(startY - endY) / 2, radius * 2);
+    radius = Math.min(Math.abs(startY - endY) / 2, radius);
+    path += `L ${halfX - gap} ${startY} `;
+    path += this.createHalfCirclePath(
+      halfX - gap,
+      startY,
+      halfX,
+      startY - gap,
+      radius
+    );
+    if (startY !== endY) {
+      path += `L ${halfX} ${endY + gap} `;
+      path += this.createHalfCirclePath(
+        halfX,
+        endY + gap,
+        halfX + gap,
+        endY,
+        -radius
+      );
     }
+    path += `L ${endX} ${endY}`;
 
     path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${
       endY + 8
@@ -268,15 +263,7 @@ export class App {
     const angle = Math.atan2(endY - startY, endX - startX);
     const controlX = centerX + radius * Math.cos(angle + Math.PI / 2);
     const controlY = centerY + radius * Math.sin(angle + Math.PI / 2);
-    return `M${startX},${startY} Q${controlX},${controlY} ${endX},${endY}`;
-  }
-
-  drawPath(curvatureType: string): void {
-    const path = this.createCurvature(15, 250, 200, 50, 5, curvatureType);
-    const curvedPath = document.getElementById('curvedPath') as HTMLElement;
-    if (curvedPath) {
-      curvedPath.setAttribute('d', path);
-    }
+    return `Q${controlX},${controlY} ${endX},${endY}`;
   }
 }
 
