@@ -197,12 +197,14 @@ const combinations = [
       <select #outputSelect id="outputSelect">
         <option *ngFor="let output of outputs | keyvalue" [value]="output.key">{{ output.key }}</option>
       </select>
-      <button type="button" (click)="createTestCurvature(inputX.value, inputY.value, outputX.value, outputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
+      <button type="button" (click)="createTestCurvature(+inputX.value, +inputY.value, +outputX.value, +outputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
     </form>
-    <svg id="test-path-id" width="300" height="300" >
+    <svg width="300" height="300">
       <path
+        id="test-path-id"
         stroke="black"
         fill="transparent"
+        d=""
       />
     </svg>
     <br>
