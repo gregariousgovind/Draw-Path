@@ -302,9 +302,9 @@ export class App {
         break;
       case 'output_right':
         if (startX > endX) {
-          x = halfX, y = startY;
-        } else {
           x = startX + offset, y = startY;
+        } else {
+          x = halfX, y = startY;
         }
         break;
       case 'output_bottom':
@@ -319,55 +319,74 @@ export class App {
     return { initialPath: path, cStartX: x, cStartY: y };
   }
 
-  getConnector(cStartX: number, cStartY: number, cEndX: number, cEndY: number, input: string, output: string) {
+  getConnector(startX: number, startY: number, endX: number, endY: number, input: string, output: string) {
     let path: string = '';
+    const halfX = (startX + endX) / 2;
+    const halfY = (startY + endY) / 2;
     switch (`${output}-${input}`) {
       case 'output_left-input_left':
+        path = `L ${startX} ${endY} `;
         break;
 
       case 'output_left-input_top':
+        path = `L ${startX} ${endY} `;
         break;
 
       case 'output_left-input_right':
+        path = `L ${startX} ${halfY} `;
+        path += `L ${endX} ${halfY} `;
         break;
 
       case 'output_left-input_bottom':
+        path = `L ${startX} ${endY} `
         break;
 
       case 'output_top-input_left':
+        path = `L ${startX} ${endY} `
         break;
 
       case 'output_top-input_top':
+        path = `L ${startX} ${endY} `
         break;
 
       case 'output_top-input_right':
+        path = `L ${endX} ${startY} `
         break;
 
       case 'output_top-input_bottom':
+        path = `L ${startX} ${endY} `
         break;
 
       case 'output_right-input_left':
+        path = `L ${startX} ${endY} `
         break;
 
       case 'output_right-input_top':
+        path = `L ${startX} ${endY} `
         break;
 
       case 'output_right-input_right':
+        path = `L ${endX} ${startY} `
         break;
 
       case 'output_right-input_bottom':
+        path = `L ${endX} ${startY} `
         break;
 
       case 'output_bottom-input_left':
+        path = `L ${startX} ${endY} `
         break;
 
       case 'output_bottom-input_top':
+        path = `L ${startX} ${endY} `
         break;
 
       case 'output_bottom-input_right':
+        path = `L ${endX} ${startY} `
         break;
 
       case 'output_bottom-input_bottom':
+        path = `L ${endX} ${startY} `
         break;
 
       default:
