@@ -288,37 +288,39 @@ export class App {
     switch (output) {
       case 'output_left':
         if (startX > endX) {
-          path += `L ${halfX} ${startY} `;
+          x = halfX, y = startY;
         } else {
-          path += `L ${startX - offset} ${startY} `;
+          x = startX - offset, y = startY;
         }
         break;
       case 'output_top':
         if (startY > endY) {
-          path += `L ${startX} ${halfY} `;
+          x = startX, y = halfY;
         } else {
-          path += `L ${startX} ${startY - offset} `;
+          x = startX, y = startY - offset;
         }
         break;
       case 'output_right':
         if (startX > endX) {
-          path += `L ${halfX} ${startY} `;
+          x = halfX, y = startY;
         } else {
-          path += `L ${startX + offset} ${startY} `;
+          x = startX + offset, y = startY;
         }
         break;
       case 'output_bottom':
         if (startY > endY) {
-          path += `L ${startX} ${halfY} `;
+          x = startX, y = halfY;
         } else {
-          path += `L ${startX} ${startY + offset} `;
+          x = startX, y = startY + offset;
         }
         break;
     }
+    path = `L ${x} ${y} `
     return { initialPath: path, cStartX: x, cStartY: y };
   }
 
   getConnector(cStartX: number, cStartY: number, cEndX: number, cEndY: number, input: string, output: string) {
+    let path: string = '';
     switch (`${output}-${input}`) {
       case 'output_left-input_left':
         break;
@@ -371,7 +373,7 @@ export class App {
       default:
         break;
     }
-    return '';
+    return path;
   }
 
   getFinalPath(startX: number, startY: number, endX: number, endY: number, input: string) {
@@ -384,33 +386,34 @@ export class App {
     switch (input) {
       case 'input_left':
         if (startX < endX) {
-          path += `L ${halfX} ${endY} `;
+          x = halfX, y = endY;
         } else {
-          path += `L ${endX - offset} ${endY} `;
+          x = endX - offset, y = endY;
         }
         break;
       case 'input_top':
         if (startY < endY) {
-          path += `L ${endX} ${halfY} `;
+          x = endX, y = halfY;
         } else {
-          path += `L ${endX} ${endY - offset} `;
+          x = endX, y = endY - offset;
         }
         break;
       case 'input_right':
         if (startX < endX) {
-          path += `L ${endX + offset} ${endY} `;
+          x = endX + offset, y = endY;
         } else {
-          path += `L ${halfX} ${endY} `;
+          x = halfX, y = endY;
         }
         break;
       case 'input_bottom':
         if (startY < endY) {
-          path += `L ${endX} ${endY - offset} `;
+          x = endX, y = endY - offset;
         } else {
-          path += `L ${endX} ${halfY} `;
+          x = endX, y = halfY;
         }
         break;
     }
+    path = `L ${x} ${y} `
     return { finalPath: path, cEndX: x, cEndY: y };
   }
 
