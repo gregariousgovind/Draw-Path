@@ -323,145 +323,145 @@ export class App {
   getConnector(cStartX: number, cStartY: number, cEndX: number, cEndY: number, input: string, output: string) {
     // const halfX = (startX + endX) / 2;
     // const halfY = (startY + endY) / 2;
-    // switch (`${output}-${input}`) {
-    //   case 'output_left-input_left':
-    //     path += `L ${startX - 20} ${startY} `;
-    //     if (startY === endY) {
-    //       path += `L ${startX - 20} ${startY + 20} `;
-    //       path += `L ${endX - 20} ${endY + 20}`;
-    //     } else if (startX > endX) {
-    //       path += `L ${endX - 20} ${startY} `;
-    //     } else if (startY !== endY) {
-    //       path += `L ${startX - 20} ${endY} `;
-    //     }
-    //     path += `L ${endX - 20} ${endY}`;
-    //     break;
+    switch (`${output}-${input}`) {
+      case 'output_left-input_left':
+        //     path += `L ${startX - 20} ${startY} `;
+        //     if (startY === endY) {
+        //       path += `L ${startX - 20} ${startY + 20} `;
+        //       path += `L ${endX - 20} ${endY + 20}`;
+        //     } else if (startX > endX) {
+        //       path += `L ${endX - 20} ${startY} `;
+        //     } else if (startY !== endY) {
+        //       path += `L ${startX - 20} ${endY} `;
+        //     }
+        //     path += `L ${endX - 20} ${endY}`;
+        break;
 
-    //   case 'output_left-input_top':
-    //     path += `L ${startX - 20} ${startY} `;
-    //     if (startY !== endY) {
-    //       path += `L ${startX - 20} ${endY - 20} `;
-    //     }
-    //     path += `L ${endX} ${endY - 20}`;
-    //     break;
+      case 'output_left-input_top':
+        //     path += `L ${startX - 20} ${startY} `;
+        //     if (startY !== endY) {
+        //       path += `L ${startX - 20} ${endY - 20} `;
+        //     }
+        //     path += `L ${endX} ${endY - 20}`;
+        break;
 
-    //   case 'output_left-input_right':
-    //     path += `L ${startX - 20} ${startY} `;
-    //     if (startY !== endY) {
-    //       path += `L ${startX - 20} ${endY} `;
-    //     }
-    //     path += `L ${endX + 20} ${endY}`;
-    //     break;
+      case 'output_left-input_right':
+        //     path += `L ${startX - 20} ${startY} `;
+        //     if (startY !== endY) {
+        //       path += `L ${startX - 20} ${endY} `;
+        //     }
+        //     path += `L ${endX + 20} ${endY}`;
+        break;
 
-    //   case 'output_left-input_bottom':
-    //     path += `L ${startX - 20} ${startY} `;
-    //     if (startY !== endY) {
-    //       path += `L ${startX - 20} ${endY + 20} `;
-    //     }
-    //     path += `L ${endX} ${endY + 20}`;
-    //     break;
+      case 'output_left-input_bottom':
+        //     path += `L ${startX - 20} ${startY} `;
+        //     if (startY !== endY) {
+        //       path += `L ${startX - 20} ${endY + 20} `;
+        //     }
+        //     path += `L ${endX} ${endY + 20}`;
+        break;
 
-    //   case 'output_top-input_left':
-    //     path += `L ${startX} ${startY - 20} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${endX - 20} ${startY - 20} `;
-    //     }
-    //     path += `L ${endX - 20} ${endY}`;
-    //     break;
+      case 'output_top-input_left':
+        //     path += `L ${startX} ${startY - 20} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${endX - 20} ${startY - 20} `;
+        //     }
+        //     path += `L ${endX - 20} ${endY}`;
+        break;
 
-    //   case 'output_top-input_top':
-    //     path += `L ${startX} ${startY - 20} `;
-    //     if (startY > endY) {
-    //       path += `L ${endX} ${startY - 20} `;
-    //     } else {
-    //       path += `L ${endX} ${endY - 20} `;
-    //     }
-    //     break;
+      case 'output_top-input_top':
+        //     path += `L ${startX} ${startY - 20} `;
+        //     if (startY > endY) {
+        //       path += `L ${endX} ${startY - 20} `;
+        //     } else {
+        //       path += `L ${endX} ${endY - 20} `;
+        //     }
+        break;
 
-    //   case 'output_top-input_right':
-    //     path += `L ${startX} ${startY - 20} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${endX + 20} ${startY - 20} `;
-    //     }
-    //     path += `L ${endX + 20} ${endY}`;
-    //     break;
+      case 'output_top-input_right':
+        //     path += `L ${startX} ${startY - 20} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${endX + 20} ${startY - 20} `;
+        //     }
+        //     path += `L ${endX + 20} ${endY}`;
+        break;
 
-    //   case 'output_top-input_bottom':
-    //     path += `L ${startX} ${startY - 20} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${startX} ${endY + 20} `;
-    //     }
-    //     path += `L ${endX} ${endY + 20}`;
-    //     break;
+      case 'output_top-input_bottom':
+        //     path += `L ${startX} ${startY - 20} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${startX} ${endY + 20} `;
+        //     }
+        //     path += `L ${endX} ${endY + 20}`;
+        break;
 
-    //   case 'output_right-input_left':
-    //     path += `L ${startX + 20} ${startY} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${endX - 20} ${startY} `;
-    //     }
-    //     path += `L ${endX - 20} ${endY}`;
-    //     break;
+      case 'output_right-input_left':
+        //     path += `L ${startX + 20} ${startY} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${endX - 20} ${startY} `;
+        //     }
+        //     path += `L ${endX - 20} ${endY}`;
+        break;
 
-    //   case 'output_right-input_top':
-    //     path += `L ${startX + 20} ${startY} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${endX} ${startY - 20} `;
-    //     }
-    //     path += `L ${endX} ${endY - 20}`;
-    //     break;
+      case 'output_right-input_top':
+        //     path += `L ${startX + 20} ${startY} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${endX} ${startY - 20} `;
+        //     }
+        //     path += `L ${endX} ${endY - 20}`;
+        break;
 
-    //   case 'output_right-input_right':
-    //     path += `L ${startX + 20} ${startY} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${endX + 20} ${startY} `;
-    //     }
-    //     path += `L ${endX + 20} ${endY}`;
-    //     break;
+      case 'output_right-input_right':
+        //     path += `L ${startX + 20} ${startY} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${endX + 20} ${startY} `;
+        //     }
+        //     path += `L ${endX + 20} ${endY}`;
+        break;
 
-    //   case 'output_right-input_bottom':
-    //     path += `L ${startX + 20} ${startY} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${endX} ${startY + 20} `;
-    //     }
-    //     path += `L ${endX} ${endY + 20}`;
-    //     break;
+      case 'output_right-input_bottom':
+        //     path += `L ${startX + 20} ${startY} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${endX} ${startY + 20} `;
+        //     }
+        //     path += `L ${endX} ${endY + 20}`;
+        break;
 
-    //   case 'output_bottom-input_left':
-    //     path += `L ${startX} ${startY + 20} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${endX - 20} ${startY + 20} `;
-    //     }
-    //     path += `L ${endX - 20} ${endY}`;
-    //     break;
+      case 'output_bottom-input_left':
+        //     path += `L ${startX} ${startY + 20} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${endX - 20} ${startY + 20} `;
+        //     }
+        //     path += `L ${endX - 20} ${endY}`;
+        break;
 
-    //   case 'output_bottom-input_top':
-    //     path += `L ${startX} ${startY + 20} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${startX} ${endY - 20} `;
-    //     }
-    //     path += `L ${endX} ${endY - 20}`;
-    //     break;
+      case 'output_bottom-input_top':
+        //     path += `L ${startX} ${startY + 20} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${startX} ${endY - 20} `;
+        //     }
+        //     path += `L ${endX} ${endY - 20}`;
+        break;
 
-    //   case 'output_bottom-input_right':
-    //     path += `L ${startX} ${startY + 20} `;
-    //     if (startX !== endX || startY !== endY) {
-    //       path += `L ${endX + 20} ${startY + 20} `;
-    //     }
-    //     path += `L ${endX + 20} ${endY}`;
-    //     break;
+      case 'output_bottom-input_right':
+        //     path += `L ${startX} ${startY + 20} `;
+        //     if (startX !== endX || startY !== endY) {
+        //       path += `L ${endX + 20} ${startY + 20} `;
+        //     }
+        //     path += `L ${endX + 20} ${endY}`;
+        break;
 
-    //   case 'output_bottom-input_bottom':
-    //     path += `L ${startX} ${startY + 20} `;
-    //     if (startY > endY) {
-    //       path += `L ${endX} ${startY + 20} `;
-    //     } else {
-    //       path += `L ${endX} ${endY + 20} `;
-    //     }
-    //     break;
+      case 'output_bottom-input_bottom':
+        //     path += `L ${startX} ${startY + 20} `;
+        //     if (startY > endY) {
+        //       path += `L ${endX} ${startY + 20} `;
+        //     } else {
+        //       path += `L ${endX} ${endY + 20} `;
+        //     }
+        break;
 
-    //   default:
-    //     break;
-    // }
+      default:
+        break;
+    }
     return '';
   }
 
