@@ -431,7 +431,7 @@ export class App {
           path += `L ${halfX} ${startY} `;
         } else {
           path += `L ${startX - offset} ${startY} `;
-          path += `L ${startX - offset} ${endY} `;
+          // path += `L ${startX - offset} ${halfY} `;
         }
         break;
       case 'output_top':
@@ -439,7 +439,7 @@ export class App {
           path += `L ${startX} ${halfY} `;
         } else {
           path += `L ${startX} ${startY - offset} `;
-          path += `L ${endX} ${startY - offset} `;
+          // path += `L ${endX} ${startY - offset} `;
         }
         break;
       case 'output_right':
@@ -465,13 +465,12 @@ export class App {
     const halfX = (startX + endX) / 2;
     const halfY = (startY + endY) / 2;
     const offset = 40;
-    debugger;
     switch (input) {
       case 'input_left':
         if (startX < endX) {
           path += `L ${halfX} ${endY} `;
         } else {
-          path += `L ${endX - offset} ${startY} `;
+          // path += `L ${endX - offset} ${startY} `;
           path += `L ${endX - offset} ${endY} `;
         }
         break;
@@ -479,22 +478,23 @@ export class App {
         if (startY < endY) {
           path += `L ${endX} ${halfY} `;
         } else {
-          path += `L ${startX} ${endY - offset} `;
+          // path += `L ${startX} ${endY - offset} `;
           path += `L ${endX} ${endY - offset} `;
         }
         break;
       case 'input_right':
-        if (startX > endX) {
-          path += `L ${halfX} ${endY} `;
-        } else {
+        if (startX < endX) {
+          // path += `L ${endX + offset} ${halfY} `;
           path += `L ${endX + offset} ${endY} `;
+        } else {
+          path += `L ${halfX} ${endY} `;
         }
         break;
       case 'input_bottom':
-        if (startY > endY) {
-          path += `L ${endX} ${halfY} `;
-        } else {
+        if (startY < endY) {
           path += `L ${endX} ${endY - offset} `;
+        } else {
+          path += `L ${endX} ${halfY} `;
         }
         break;
     }
