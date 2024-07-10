@@ -197,7 +197,7 @@ const combinations = [
       <select #outputSelect id="outputSelect">
         <option *ngFor="let output of outputs | keyvalue">{{ output.key }}</option>
       </select>
-      <button type="button" (click)="createTestCurvature(+outputX.value, +outputY.value, +inputX.value, +inputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
+      <button type="button" (click)="drawPath(+outputX.value, +outputY.value, +inputX.value, +inputY.value, 5, outputSelect.value, inputSelect.value)">Submit</button>
     </form>
     <svg width="400" height="400">
       <path
@@ -237,7 +237,7 @@ export class App {
     output_bottom: {},
   };
 
-  createTestCurvature(
+  drawPath(
     startX: number,
     startY: number,
     endX: number,
@@ -267,19 +267,22 @@ export class App {
     output: string,
     input: string
   ): string {
-    let path = `M ${startX} ${startY} `;
-    let { initialPath, cStartX, cStartY } = this.getInitialPath(startX, startY, endX, endY, output);
-    let { finalPath, cEndX, cEndY } = this.getFinalPath(startX, startY, endX, endY, input);
-    let connector = this.getConnector(cStartX, cStartY, cEndX, cEndY, input, output);
-    path += `${initialPath} ${connector} ${finalPath}`
-    path += `L ${endX} ${endY} `;
-    path += this.drawArrowHead(endX, endY, input);
+    let points = [{ x: startX, y: startY }];
+    let { initialPoints, cStartX, cStartY } = this.getInitialPoints(startX, startY, endX, endY, output);
+    let { finalPoints, cEndX, cEndY } = this.getEndPoints(startX, startY, endX, endY, input);
+    let connectorPoints = this.getConnectionPoints(cStartX, cStartY, cEndX, cEndY, input, output);
 
-    return path;
+    points = points.concat(initialPoints).concat(connectorPoints).concat(finalPoints);
+    points.push({ x: endX, y: endY });
+
+    let arrowHeadPoints = this.drawArrowHead(endX, endY, input);
+    points = points.concat(arrowHeadPoints);
+
+    return this.drawPathFromPoints(points);
   }
 
-  getInitialPath(startX: number, startY: number, endX: number, endY: number, output: string) {
-    let path: string = '';
+  getInitialPoints(startX: number, startY: number, endX: number, endY: number, output: string) {
+    let points: Array<{ x: number, y: number }> = [];
     const halfX = (startX + endX) / 2;
     const halfY = (startY + endY) / 2;
     const offset = 40;
@@ -288,115 +291,114 @@ export class App {
     switch (output) {
       case 'output_left':
         if (startX > endX) {
-          x = halfX, y = startY;
+          x = halfX; y = startY;
         } else {
-          x = startX - offset, y = startY;
+          x = startX - offset; y = startY;
         }
         break;
       case 'output_top':
         if (startY > endY) {
-          x = startX, y = halfY;
+          x = startX; y = halfY;
         } else {
-          x = startX, y = startY - offset;
+          x = startX; y = startY - offset;
         }
         break;
       case 'output_right':
         if (startX > endX) {
-          x = startX + offset, y = startY;
+          x = startX + offset; y = startY;
         } else {
-          x = halfX, y = startY;
+          x = halfX; y = startY;
         }
         break;
       case 'output_bottom':
         if (startY > endY) {
-          x = startX, y = halfY;
+          x = startX; y = halfY;
         } else {
-          x = startX, y = startY + offset;
+          x = startX; y = startY + offset;
         }
         break;
     }
-    path = `L ${x} ${y} `
-    return { initialPath: path, cStartX: x, cStartY: y };
+    points.push({ x, y });
+    return { initialPoints: points, cStartX: x, cStartY: y };
   }
 
-  getConnector(startX: number, startY: number, endX: number, endY: number, input: string, output: string) {
-    let path: string = '';
+  getConnectionPoints(startX: number, startY: number, endX: number, endY: number, input: string, output: string) {
+    let points: Array<{ x: number, y: number }> = [];
     const halfX = (startX + endX) / 2;
     const halfY = (startY + endY) / 2;
     switch (`${output}-${input}`) {
       case 'output_left-input_left':
-        path = `L ${startX} ${endY} `;
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_left-input_top':
-        path = `L ${startX} ${endY} `;
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_left-input_right':
-        path = `L ${startX} ${halfY} `;
-        path += `L ${endX} ${halfY} `;
+        points.push({ x: startX, y: halfY }, { x: endX, y: halfY });
         break;
 
       case 'output_left-input_bottom':
-        path = `L ${startX} ${endY} `
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_top-input_left':
-        path = `L ${startX} ${endY} `
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_top-input_top':
-        path = `L ${startX} ${endY} `
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_top-input_right':
-        path = `L ${endX} ${startY} `
+        points.push({ x: endX, y: startY });
         break;
 
       case 'output_top-input_bottom':
-        path = `L ${startX} ${endY} `
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_right-input_left':
-        path = `L ${startX} ${endY} `
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_right-input_top':
-        path = `L ${startX} ${endY} `
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_right-input_right':
-        path = `L ${endX} ${startY} `
+        points.push({ x: endX, y: startY });
         break;
 
       case 'output_right-input_bottom':
-        path = `L ${endX} ${startY} `
+        points.push({ x: endX, y: startY });
         break;
 
       case 'output_bottom-input_left':
-        path = `L ${startX} ${endY} `
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_bottom-input_top':
-        path = `L ${startX} ${endY} `
+        points.push({ x: startX, y: endY });
         break;
 
       case 'output_bottom-input_right':
-        path = `L ${endX} ${startY} `
+        points.push({ x: endX, y: startY });
         break;
 
       case 'output_bottom-input_bottom':
-        path = `L ${endX} ${startY} `
+        points.push({ x: endX, y: startY });
         break;
 
       default:
         break;
     }
-    return path;
+    return points;
   }
 
-  getFinalPath(startX: number, startY: number, endX: number, endY: number, input: string) {
-    let path: string = '';
+  getEndPoints(startX: number, startY: number, endX: number, endY: number, input: string) {
+    let points: Array<{ x: number, y: number }> = [];
     const halfX = (startX + endX) / 2;
     const halfY = (startY + endY) / 2;
     const offset = 40;
@@ -405,54 +407,54 @@ export class App {
     switch (input) {
       case 'input_left':
         if (startX < endX) {
-          x = halfX, y = endY;
+          x = halfX; y = endY;
         } else {
-          x = endX - offset, y = endY;
+          x = endX - offset; y = endY;
         }
         break;
       case 'input_top':
         if (startY < endY) {
-          x = endX, y = halfY;
+          x = endX; y = halfY;
         } else {
-          x = endX, y = endY - offset;
+          x = endX; y = endY - offset;
         }
         break;
       case 'input_right':
         if (startX < endX) {
-          x = endX + offset, y = endY;
+          x = endX + offset; y = endY;
         } else {
-          x = halfX, y = endY;
+          x = halfX; y = endY;
         }
         break;
       case 'input_bottom':
         if (startY < endY) {
-          x = endX, y = endY - offset;
+          x = endX; y = endY - offset;
         } else {
-          x = endX, y = halfY;
+          x = endX; y = halfY;
         }
         break;
     }
-    path = `L ${x} ${y} `
-    return { finalPath: path, cEndX: x, cEndY: y };
+    points.push({ x, y });
+    return { finalPoints: points, cEndX: x, cEndY: y };
   }
 
   drawArrowHead(endX: number, endY: number, input: string) {
-    let path: string = '';
+    let points: Array<{ x: number, y: number }> = [];
     switch (input) {
       case 'input_left':
-        path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
+        points.push({ x: endX - 10, y: endY - 8 }, { x: endX, y: endY }, { x: endX - 10, y: endY + 8 });
         break;
       case 'input_top':
-        path += ` M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
+        points.push({ x: endX - 8, y: endY - 10 }, { x: endX, y: endY }, { x: endX + 8, y: endY - 10 });
         break;
       case 'input_right':
-        path += ` M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
+        points.push({ x: endX + 10, y: endY - 8 }, { x: endX, y: endY }, { x: endX + 10, y: endY + 8 });
         break;
       case 'input_bottom':
-        path += ` M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
+        points.push({ x: endX - 8, y: endY + 10 }, { x: endX, y: endY }, { x: endX + 8, y: endY + 10 });
         break;
     }
-    return path;
+    return points;
   }
 
   createHalfCirclePath(
@@ -468,6 +470,14 @@ export class App {
     const controlX = centerX + radius * Math.cos(angle + Math.PI / 2);
     const controlY = centerY + radius * Math.sin(angle + Math.PI / 2);
     return `Q${controlX},${controlY} ${endX},${endY}`;
+  }
+
+  drawPathFromPoints(points: Array<{ x: number, y: number }>): string {
+    let path = `M ${points[0].x} ${points[0].y} `;
+    for (let i = 1; i < points.length; i++) {
+      path += `L ${points[i].x} ${points[i].y} `;
+    }
+    return path;
   }
 }
 
