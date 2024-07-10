@@ -212,7 +212,7 @@ const combinations = [
       <h2>From: {{ combination.output }};<br>To: {{ combination.input }};</h2>
       <svg id="{{combination.id}}" width="400" height="400" >
         <path
-          [attr.d]="createCurvature(combination.start.x, combination.start.y, combination.end.x, combination.end.y, 5, combination.output, combination.input)"
+          [attr.d]="createCurvature(combination.start.x, combination.start.y, combination.end.x, combination.end.y, 10, combination.output, combination.input)"
           stroke="black"
           fill="transparent"
         />
@@ -271,14 +271,11 @@ export class App {
     let { initialPoints, cStartX, cStartY } = this.getInitialPoints(startX, startY, endX, endY, output);
     let { finalPoints, cEndX, cEndY } = this.getEndPoints(startX, startY, endX, endY, input);
     let connectorPoints = this.getConnectionPoints(cStartX, cStartY, cEndX, cEndY, input, output);
-
     points = points.concat(initialPoints).concat(connectorPoints).concat(finalPoints);
     points.push({ x: endX, y: endY });
-
-    let arrowHeadPoints = this.drawArrowHead(endX, endY, input);
-    points = points.concat(arrowHeadPoints);
-
-    return this.drawPathFromPoints(points);
+    let path = this.drawPathFromPoints(points, radius);
+    path += this.drawArrowHead(endX, endY, input);
+    return path;
   }
 
   getInitialPoints(startX: number, startY: number, endX: number, endY: number, output: string) {
@@ -439,22 +436,22 @@ export class App {
   }
 
   drawArrowHead(endX: number, endY: number, input: string) {
-    let points: Array<{ x: number, y: number }> = [];
+    let path: string = '';
     switch (input) {
       case 'input_left':
-        points.push({ x: endX - 10, y: endY - 8 }, { x: endX, y: endY }, { x: endX - 10, y: endY + 8 });
+        path += `M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${endY + 8}`;
         break;
       case 'input_top':
-        points.push({ x: endX - 8, y: endY - 10 }, { x: endX, y: endY }, { x: endX + 8, y: endY - 10 });
+        path += `M ${endX - 8} ${endY - 10} L ${endX} ${endY} L ${endX + 8} ${endY - 10}`;
         break;
       case 'input_right':
-        points.push({ x: endX + 10, y: endY - 8 }, { x: endX, y: endY }, { x: endX + 10, y: endY + 8 });
+        path += `M ${endX + 10} ${endY - 8} L ${endX} ${endY} L ${endX + 10} ${endY + 8}`;
         break;
       case 'input_bottom':
-        points.push({ x: endX - 8, y: endY + 10 }, { x: endX, y: endY }, { x: endX + 8, y: endY + 10 });
+        path += `M ${endX - 8} ${endY + 10} L ${endX} ${endY} L ${endX + 8} ${endY + 10}`;
         break;
     }
-    return points;
+    return path;
   }
 
   createHalfCirclePath(
@@ -472,13 +469,77 @@ export class App {
     return `Q${controlX},${controlY} ${endX},${endY}`;
   }
 
-  drawPathFromPoints(points: Array<{ x: number, y: number }>): string {
+  drawPathFromPoints(points: Array<{ x: number, y: number }>, radius: number): string {
+    if (points.length < 2) return '';
     let path = `M ${points[0].x} ${points[0].y} `;
     for (let i = 1; i < points.length; i++) {
-      path += `L ${points[i].x} ${points[i].y} `;
+      const previous = points[i - 1];
+      const current = points[i];
+
+      if (i < points.length - 1) {
+        const next = points[i + 1];
+
+        const dx1 = current.x - previous.x;
+        const dy1 = current.y - previous.y;
+        const dx2 = next.x - current.x;
+        const dy2 = next.y - current.y;
+
+        if ((dx1 !== 0 && dx2 !== 0 && (dx1 / dx2) < 0) || (dy1 !== 0 && dy2 !== 0 && (dy1 / dy2) < 0)) {
+          // debugger;
+          //   // There is a corner, draw a half-circle path
+          //   const midX = current.x;
+          //   const midY = current.y;
+          //   const newRadius = Math.min(radius, Math.abs(dy1 / 2), Math.abs(dy2 / 2));
+
+          //   if (dx1 !== 0 && dy2 !== 0) {  // Horizontal to vertical
+          //     path += this.createHalfCirclePath(midX - newRadius, midY, midX, midY + newRadius, newRadius);
+          //   } else if (dy1 !== 0 && dx2 !== 0) {  // Vertical to horizontal
+          //     path += this.createHalfCirclePath(midX, midY - newRadius, midX + newRadius, midY, newRadius);
+          //   }
+
+          //   continue;
+        }
+      }
+      path += `L ${current.x} ${current.y} `;
     }
-    return path;
+    return path.trim();
   }
 }
 
 bootstrapApplication(App);
+
+// function createCurvature(startX, startY, endX, endY, radius, curvatureType) {
+//   var halfX = startX + (endX - startX) / 2;
+//   var path = `M ${startX} ${startY} `;
+
+//   switch (curvatureType) {
+//     default:
+//       var gap = Math.min(Math.abs(startY - endY)/2, radius * 2);
+//       radius = Math.min(Math.abs(startY - endY) / 2, radius);
+//       path += `L ${halfX - gap} ${startY} `;
+//       path += createHalfCirclePath(
+//         halfX - gap,
+//         startY,
+//         halfX,
+//         startY - gap,
+//         radius
+//       );
+//       if (startY !== endY) {
+//         path += `L ${halfX} ${endY + gap} `;
+//         path += createHalfCirclePath(
+//           halfX,
+//           endY + gap,
+//           halfX + gap,
+//           endY,
+//           -radius
+//         );
+//       }
+//       path += `L ${endX} ${endY}`;
+//   }
+
+//   path += ` M ${endX - 10} ${endY - 8} L ${endX} ${endY} L ${endX - 10} ${
+//     endY + 8
+//   }`;
+
+//   return path;
+// }
