@@ -65,11 +65,11 @@ button {
   justify-content: center;
   gap: 8px;
   margin: 8px;
+}
 
-  h2 {
-      margin: 0 0 8px 0;
-      text-align: center;
-      font-size: 14px;
-      font-weight: 500;
-  }
+h2 {
+  margin: 0 0 8px 0;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
 }
