@@ -267,8 +267,7 @@ export class App {
         let points = [{ x: startX, y: startY }];
         let { initialPoints, cStartX, cStartY } = this.getInitialPoints(startX, startY, endX, endY, output);
         let { finalPoints, cEndX, cEndY } = this.getEndPoints(startX, startY, endX, endY, input);
-        // let connectorPoints = this.getConnectionPoints(cStartX, cStartY, cEndX, cEndY, input, output);
-        let connectorPoints:any = [];
+        let connectorPoints = this.getConnectionPoints(cStartX, cStartY, cEndX, cEndY, input, output);
         points = points.concat(initialPoints).concat(connectorPoints).concat(finalPoints);
         points.push({ x: endX, y: endY });
         let path = this.drawPathFromPoints(points, radius);
@@ -287,10 +286,10 @@ export class App {
         const halfX = (startX + endX) / 2;
         const halfY = (startY + endY) / 2;
         const offset = 20;
-    
+
         let x = startX,
             y = startY;
-    
+
         if (output === 'output_1') {
             if (startX < endX) {
                 x = halfX;
@@ -308,7 +307,7 @@ export class App {
                 return { initialPoints: points, cStartX: x, cStartY: y };
             } else {
                 y = startY - offset;
-                points.push({ x, y }, {x: halfX, y});
+                points.push({ x, y }, { x: halfX, y });
                 return { initialPoints: points, cStartX: halfX, cStartY: y };
             }
         } else if (output === 'output_3') {
@@ -328,7 +327,7 @@ export class App {
                 return { initialPoints: points, cStartX: x, cStartY: y };
             } else {
                 x = startX - offset;
-                points.push({ x, y }, {x, y: halfY});
+                points.push({ x, y }, { x, y: halfY });
                 return { initialPoints: points, cStartX: x, cStartY: halfY };
             }
         } else {
@@ -336,76 +335,29 @@ export class App {
         }
     }
 
-    getConnectionPoints(startX: number, startY: number, endX: number, endY: number, input: string, output: string) {
+    getConnectionPoints(cStartX: number, cStartY: number, cEndX: number, cEndY: number, input: string, output: string) {
         let points: Array<{ x: number, y: number }> = [];
-        const halfX = (startX + endX) / 2;
-        const halfY = (startY + endY) / 2;
         switch (`${output}-${input}`) {
             case 'output_4-input_1':
-                points.push({ x: startX, y: endY });
-                break;
-
             case 'output_4-input_2':
-                points.push({ x: startX, y: endY });
-                break;
-
-            case 'output_4-input_4':
-                points.push({ x: startX, y: halfY }, { x: endX, y: halfY });
-                break;
-
-            case 'output_4-input_3':
-                points.push({ x: startX, y: endY });
-                break;
-
             case 'output_2-input_1':
-                points.push({ x: startX, y: endY });
-                break;
-
             case 'output_2-input_2':
-                points.push({ x: startX, y: endY });
-                break;
-
-            case 'output_2-input_4':
-                points.push({ x: endX, y: startY });
-                break;
-
-            case 'output_2-input_3':
-                points.push({ x: startX, y: endY });
-                break;
-
-            case 'output_1-input_1':
-                points.push({ x: startX, y: endY });
-                break;
-
-            case 'output_1-input_2':
-                points.push({ x: startX, y: endY });
-                break;
-
-            case 'output_1-input_4':
-                points.push({ x: endX, y: startY });
-                break;
-
-            case 'output_1-input_3':
-                points.push({ x: endX, y: startY });
-                break;
-
             case 'output_3-input_1':
-                points.push({ x: startX, y: endY });
+            case 'output_4-input_3':
+                points.push({ x: cStartX, y: cEndY });
                 break;
-
-            case 'output_3-input_2':
-                points.push({ x: startX, y: endY });
-                break;
-
+                
+            case 'output_1-input_4':
+            case 'output_1-input_3':
             case 'output_3-input_4':
-                points.push({ x: endX, y: startY });
-                break;
-
             case 'output_3-input_3':
-                points.push({ x: endX, y: startY });
+            case 'output_1-input_2':
+            case 'output_2-input_4':
+                points.push({ x: cEndX, y: cStartY });
                 break;
 
             default:
+                points.push({ x: cStartX, y: cEndY });
                 break;
         }
         return points;
@@ -422,10 +374,10 @@ export class App {
         const halfX = (startX + endX) / 2;
         const halfY = (startY + endY) / 2;
         const offset = 20;
-    
+
         let x = endX,
             y = endY;
-    
+
         if (input === 'input_1') {
             if (endX > startX) {
                 x = halfX;
@@ -453,7 +405,7 @@ export class App {
                 return { finalPoints: points, cEndX: x, cEndY: y };
             } else {
                 y = endY + offset;
-                points.push({ x: halfX, y}, { x, y });
+                points.push({ x: halfX, y }, { x, y });
                 return { finalPoints: points, cEndX: halfX, cEndY: y };
             }
         } else if (input === 'input_4') {
@@ -463,7 +415,7 @@ export class App {
                 return { finalPoints: points, cEndX: x, cEndY: y };
             } else {
                 x = endX + offset;
-                points.push({ x, y: halfY}, { x, y });
+                points.push({ x, y: halfY }, { x, y });
                 return { finalPoints: points, cEndX: x, cEndY: halfY };
             }
         } else {
@@ -519,8 +471,9 @@ export class App {
                 const prevLength = Math.sqrt(prevVector.x ** 2 + prevVector.y ** 2);
                 const nextLength = Math.sqrt(nextVector.x ** 2 + nextVector.y ** 2);
 
-                const prevUnit = { x: (prevVector.x / prevLength) * radius, y: (prevVector.y / prevLength) * radius };
-                const nextUnit = { x: (nextVector.x / nextLength) * radius, y: (nextVector.y / nextLength) * radius };
+                const clampedRadius = Math.min(radius, prevLength / 2, nextLength / 2);
+                const prevUnit = { x: (prevVector.x / prevLength) * clampedRadius, y: (prevVector.y / prevLength) * clampedRadius };
+                const nextUnit = { x: (nextVector.x / nextLength) * clampedRadius, y: (nextVector.y / nextLength) * clampedRadius };
 
                 const curveStart = { x: current.x - prevUnit.x, y: current.y - prevUnit.y };
                 const curveEnd = { x: current.x + nextUnit.x, y: current.y + nextUnit.y };
@@ -528,7 +481,7 @@ export class App {
                 path += ` L ${curveStart.x} ${curveStart.y}`;
 
                 const sweepFlag = prevVector.x * nextVector.y - prevVector.y * nextVector.x > 0 ? 1 : 0;
-                path += ` A ${radius} ${radius} 0 0 ${sweepFlag} ${curveEnd.x} ${curveEnd.y}`;
+                path += ` A ${clampedRadius} ${clampedRadius} 0 0 ${sweepFlag} ${curveEnd.x} ${curveEnd.y}`;
             }
         }
 
