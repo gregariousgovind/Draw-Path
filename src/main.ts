@@ -295,36 +295,45 @@ export class App {
             if (startX < endX) {
                 x = halfX;
                 points.push({ x, y });
+                return { initialPoints: points, cStartX: x, cStartY: y };
             } else {
                 x = startX + offset;
-                points.push({ x, y });
+                points.push({ x, y }, { x, y: halfY });
+                return { initialPoints: points, cStartX: x, cStartY: halfY };
             }
         } else if (output === 'output_2') {
             if (startY > endY) {
                 y = halfY;
                 points.push({ x, y });
+                return { initialPoints: points, cStartX: x, cStartY: y };
             } else {
                 y = startY - offset;
                 points.push({ x, y }, {x: halfX, y});
+                return { initialPoints: points, cStartX: halfX, cStartY: y };
             }
         } else if (output === 'output_3') {
             if (startY < endY) {
                 y = halfY;
                 points.push({ x, y });
+                return { initialPoints: points, cStartX: x, cStartY: y };
             } else {
                 y = startY + offset;
-                points.push({ x, y });
+                points.push({ x, y }, { x: halfX, y });
+                return { initialPoints: points, cStartX: halfX, cStartY: y };
             }
         } else if (output === 'output_4') {
             if (startX > endX) {
                 x = halfX;
                 points.push({ x, y });
+                return { initialPoints: points, cStartX: x, cStartY: y };
             } else {
                 x = startX - offset;
-                points.push({ x, y });
+                points.push({ x, y }, {x, y: halfY});
+                return { initialPoints: points, cStartX: x, cStartY: halfY };
             }
+        } else {
+            return { initialPoints: points, cStartX: x, cStartY: y };
         }
-        return { initialPoints: points, cStartX: x, cStartY: y };
     }
 
     getConnectionPoints(startX: number, startY: number, endX: number, endY: number, input: string, output: string) {
@@ -421,37 +430,46 @@ export class App {
             if (endX > startX) {
                 x = halfX;
                 points.push({ x, y });
+                return { finalPoints: points, cEndX: x, cEndY: y };
             } else {
                 x = endX - offset;
-                points.push({ x, y });
+                points.push({ x, y: halfY }, { x, y });
+                return { finalPoints: points, cEndX: x, cEndY: halfY };
             }
         } else if (input === 'input_2') {
             if (endY > startY) {
                 y = halfY;
                 points.push({ x, y });
+                return { finalPoints: points, cEndX: x, cEndY: y };
             } else {
                 y = endY - offset;
-                points.push({ x, y });
+                points.push({ x: halfX, y }, { x, y });
+                return { finalPoints: points, cEndX: halfX, cEndY: y };
             }
         } else if (input === 'input_3') {
             if (endY < startY) {
                 y = halfY;
                 points.push({ x, y });
+                return { finalPoints: points, cEndX: x, cEndY: y };
             } else {
                 y = endY + offset;
-                points.push({ x, y });
+                points.push({ x: halfX, y}, { x, y });
+                return { finalPoints: points, cEndX: halfX, cEndY: y };
             }
         } else if (input === 'input_4') {
             if (endX < startX) {
                 x = halfX;
                 points.push({ x, y });
+                return { finalPoints: points, cEndX: x, cEndY: y };
             } else {
                 x = endX + offset;
-                points.push({ x, y });
+                points.push({ x, y: halfY}, { x, y });
+                return { finalPoints: points, cEndX: x, cEndY: halfY };
             }
+        } else {
+            return { finalPoints: points, cEndX: x, cEndY: y };
         }
-        return { finalPoints: points, cEndX: x, cEndY: y };
-    }    
+    }
 
     drawArrowHead(endX: number, endY: number, input: string) {
         let path: string = '';
